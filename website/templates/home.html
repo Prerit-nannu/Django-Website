@@ -1,0 +1,30 @@
+<!-- home.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Welcome, {{ user.username }}!</h1>
+  <a href="{% url 'logout' %}">Logout</a>
+
+  <h2>Post a Question</h2>
+  <form method="post">
+    {% csrf_token %}
+    <input type="text" name="title" placeholder="Question Title" required>
+    <textarea name="content" placeholder="Type your question here" required></textarea>
+    <button type="submit">Post</button>
+  </form>
+
+  <h2>Questions</h2>
+  {% for question in questions %}
+    <div>
+      <h3>{{ question.title }}</h3>
+      <p>{{ question.content }}</p>
+      <small>Posted by: {{ question.-author }}</small>
+      <form method="post" action="{% url 'answer_question' question.id %}">
+        {% csrf_token %}
+        <textarea name="content" placeholder="Your answer" required></textarea>
+        <button type="submit">Answer</button>
+      </form>
+    </div>
+  {% endfor %}
+{% endblock %}
